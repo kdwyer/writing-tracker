@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Writing Tracker</title>
+    </head>
+    <body>
+        <p>Your word count for the past seven days: <span id='total-wordcount'>0</span></p>
+        <h2 id="confirmation" class="alert-success">Well done!</h2>
+        <article>
+            <h3>Your writing on {{ entry.date.strftime('%d %B %Y') }}</h3>
+            <ul>
+                <li>{{ entry.word_count }} words of {{ entry.genre }}.</li>
+                <li>Notes: {{ entry.notes }}</li>
+            </ul>
+        </article>
+        <a href="/">Return to home page</a>.
+    </body>
+</html>
+

@@ -1,5 +1,7 @@
 import webapp2
 
 app = webapp2.WSGIApplication([
-    (r'/', 'handlers.Home'),
+    (r'/', 'tracker.handlers.Home'),
+    (r'/entry/', 'tracker.handlers.Entry'),
+    (r'/confirm/.*', 'tracker.handlers.Confirmation'),
     ], debug=True)
