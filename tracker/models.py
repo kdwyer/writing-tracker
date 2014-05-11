@@ -11,6 +11,6 @@ class Entry(ndb.Model):
     notes = ndb.TextProperty()
 
     @classmethod
-    def create(cls, date, word_count, genre, notes):
+    def create(cls, date, word_count, genre, notes, parent):
         date_obj = datetime.date(*map(int, date.split('-')))
-        return cls(date=date_obj, word_count=int(word_count), genre=genre, notes=notes).put()
+        return cls(date=date_obj, word_count=int(word_count), genre=genre, notes=notes, parent=parent).put()

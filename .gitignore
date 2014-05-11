@@ -1,2 +1,7 @@
 *.pyc
 *.swp
+httplib2
+simpleauth
+oauth2
+gae_mini_profiler
+secrets.py

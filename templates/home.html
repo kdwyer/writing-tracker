@@ -7,6 +7,10 @@
         <link rel="stylesheet" href="/static/css/style.css">
     </head>
     <body class="container">
+        <section>
+            <span>Welcome {{ user.name }}!</span>
+            <span><a href="{{ uri_for('logout') }}">Logout</a></span>
+        </section>
         <header class="jumbotron">
             <h1>My Word</h1>
         </header>
