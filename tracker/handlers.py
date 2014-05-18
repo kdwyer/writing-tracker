@@ -1,3 +1,4 @@
+import datetime
 import logging
 
 from google.appengine.ext import ndb
@@ -5,6 +6,7 @@ import webapp2
 from webapp2_extras import auth, jinja2
 
 from . import models
+from . import utils
 
 logger = logging.getLogger(__file__)
 
@@ -46,8 +48,14 @@ class Home(BaseHandler):
     def get(self):
         user = self.current_user if self.logged_in else None
         if user:
+            seven_days_ago = utils.seven_days_before(datetime.date.today())
+            words = (models.Entry.query(ancestor=user.key)
+                    .filter(models.Entry.date>=seven_days_ago))
+            entries = (models.Entry.query(ancestor=user.key)
+                    .order(-models.Entry.date))
             context = {
-                    'entries': models.Entry.query(ancestor=user.key),
+                    'seven_day_count': sum(x.word_count for x in words),
+                    'entries': entries,
                     'user': user,
             }
         self.render_response('home.html', **context)
