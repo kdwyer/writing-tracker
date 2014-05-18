@@ -4,7 +4,7 @@
         <title>Writing Tracker</title>
     </head>
     <body>
-        <p>Your word count for the past seven days: <span id='total-wordcount'>0</span></p>
+        <p>Your word count for the past seven days is <span id='total-wordcount'>{{ seven_day_count }}</span></p>
         <h2 id="confirmation" class="alert-success">Well done!</h2>
         <article>
             <h3>Your writing on {{ entry.date.strftime('%d %B %Y') }}</h3>
@@ -13,7 +13,7 @@
                 <li>Notes: {{ entry.notes }}</li>
             </ul>
         </article>
-        <a href="{{ uri_for('home') }}">Return to home page</a>.
+        <a href="{{ uri_for('home') }}">Return to your home page</a>.
     </body>
 </html>
 

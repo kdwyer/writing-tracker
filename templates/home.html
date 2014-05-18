@@ -20,7 +20,7 @@
                 <h2 id="invitation">Tell us what you've done!</h2>
             </header>
             <!-- date wordcount genre note -->
-            <form method="POST" action="/entry/">
+            <form method="POST" action="{{ uri_for('entry') }}">
                 <div class="form-group">
                     <label for="date">Date</label>
                     <input type="date" id="date" name="date" class="form-control">

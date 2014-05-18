@@ -65,9 +65,14 @@ class Confirmation(BaseHandler):
 
     def get(self):
         key = self.request.GET.get('key')
+        user = self.current_user if self.logged_in else None
         entry = ndb.Key(urlsafe=key).get()
+        seven_days_ago = utils.seven_days_before(datetime.date.today())
+        words = (models.Entry.query(ancestor=user.key)
+                .filter(models.Entry.date>=seven_days_ago))
         context = {
-                'entry': entry
+                'entry': entry,
+                'seven_day_count': sum(x.word_count for x in words),
         }
         self.render_response('confirm.html', **context)
 
@@ -80,4 +85,4 @@ class Entry(BaseHandler):
         notes = self.request.POST.get('notes')
         parent = self.current_user.key
         entry = models.Entry.create(date, word_count, genre, notes, parent)
-        self.redirect('/confirm/?key=' + entry.urlsafe())
+        self.redirect_to('confirm', key=entry.urlsafe())

@@ -18,13 +18,14 @@ config['webapp2_extras.jinja2'] = {
 
 
 app = webapp2.WSGIApplication([
-    (r'/', 'tracker.handlers.Index'),
+    webapp2.Route(r'/', handler='tracker.handlers.Index', name='index'),
     webapp2.Route(r'/home',
-        'tracker.handlers.Home',
+        handler='tracker.handlers.Home',
         name='home',
         methods=['GET']),
-    (r'/entry/', 'tracker.handlers.Entry'),
-    (r'/confirm/.*', 'tracker.handlers.Confirmation'),
+    webapp2.Route(r'/entry/', handler='tracker.handlers.Entry', name='entry'),
+    webapp2.Route(r'/confirm/', handler='tracker.handlers.Confirmation',
+        name='confirm'),
     webapp2.Route(r'/auth/<provider>',
         handler='authentication.handlers.AuthHandler:_simple_auth',
         name='auth_login'),

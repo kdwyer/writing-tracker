@@ -146,11 +146,11 @@ class AuthHandler(BaseRequestHandler, SimpleAuthHandler):
                 ok, user = self.auth.store.user_model.create_user(auth_id, **_attrs)
                 if ok:
                     self.auth.set_session(self.auth.store.user_to_dict(user))
-        self.redirect('/home')
+        self.redirect_to('home')
 
     def logout(self):
         self.auth.unset_session()
-        self.redirect('/')
+        self.redirect_to('index')
 
     def _callback_uri_for(self, provider):
         return self.uri_for('auth_callback', provider=provider, _full=True)
