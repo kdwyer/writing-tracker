@@ -2,6 +2,8 @@ import logging
 import secrets
 
 import webapp2
+import gae_mini_profiler.profiler
+import gae_mini_profiler.templatetags
 
 logger = logging.getLogger(__name__)
 
@@ -13,8 +15,10 @@ config['webapp2_extras.sessions'] = {
 config['webapp2_extras.jinja2'] = {
         'globals': {
             'uri_for': webapp2.uri_for,
+            'profiler_includes': gae_mini_profiler.templatetags.profiler_includes,
         }
 }
+
 
 
 app = webapp2.WSGIApplication([
@@ -33,3 +37,5 @@ app = webapp2.WSGIApplication([
     webapp2.Route(r'/logout',
         handler='authentication.handlers.AuthHandler:logout', name='logout'),
     ], config=config, debug=True)
+
+app = gae_mini_profiler.profiler.ProfilerWSGIMiddleware(app)
