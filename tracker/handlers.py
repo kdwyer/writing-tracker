@@ -57,8 +57,8 @@ class Home(BaseHandler):
                     'seven_day_count': sum(x.word_count for x in words),
                     'entries': entries,
                     'user': user,
-                    'genres': ['Short fiction', 'Novel draft', 'Non-fiction',
-                            'Academic writing', 'Blog'],
+                    'genres': ['short fiction', 'novel draft', 'non-fiction',
+                            'academic writing', 'blog'],
                     'invalids': [],
             }
         return context

@@ -1,3 +1,7 @@
 header.jumbotron h1 {
     text-align: center;
 }
+
+select {
+    text-transform: capitalize;
+}

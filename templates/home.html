@@ -41,7 +41,7 @@
                     <select id="genre" name="genre" class="form-control">
                         {% for genre in genres %}
                         <option value="{{ genre }}" 
-                        {% if genre == selected %}selected{% endif %}>{{ genre }}</option>
+                        {% if genre == selected %} selected{% endif %}>{{ genre }}</option>
                         {% endfor %}
                     </select>
                 </div>
