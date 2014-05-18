@@ -19,29 +19,36 @@
                 <p>Your word count for the past seven days is <span id='total-wordcount'>{{ seven_day_count }}</span></p>
                 <h2 id="invitation">Tell us what you've done!</h2>
             </header>
-            <!-- date wordcount genre note -->
-            <form method="POST" action="{{ uri_for('entry') }}">
-                <div class="form-group">
+            <form method="POST" action="{{ uri_for('home') }}">
+                <div class="form-group{% if 'date' in invalids %} has-error{% endif %}">
                     <label for="date">Date</label>
-                    <input type="date" id="date" name="date" class="form-control">
+                    <input type="date" id="date" name="date"
+                    class="form-control" placeholder="2014-05-01" 
+                    value="{{ date or '' }}">
+                    <span class="help-block">You must enter a date, formatted
+                        as yyyy-mm-dd.</span>
                 </div>
-                <div class="form-group">
+                <div class="form-group{% if 'word-count' in invalids %} has-error{% endif %}">
                     <label for="word-count">Word count</label>
-                    <input type="number" id="word-count" name="word-count" class="form-control">
+                    <input type="number" id="word-count" name="word-count"
+                    class="form-control" 
+                    placeholder="How many words did you write today?"
+                    value="{{ word_count or '' }}">
+                    <span class="help-block">You must enter a number.</span>
                 </div>
                 <div class="form-group">
                     <label for="genre">Genre</label>
                     <select id="genre" name="genre" class="form-control">
-                        <option value="short fiction" name="short-fiction">Short fiction</option>
-                        <option value="novel draft" name="novel-draft">Novel draft</option>
-                        <option value="non fiction" name="non-fiction">Non-fiction</option>
-                        <option value="academic writing" name="academic-writing">Academic writing</option>
-                        <option value="blog" name="blog">Blog</option>
+                        {% for genre in genres %}
+                        <option value="{{ genre }}" 
+                        {% if genre == selected %}selected{% endif %}>{{ genre }}</option>
+                        {% endfor %}
                     </select>
                 </div>
                 <div class="form-group">
                     <label for="notes">Notes</label>
-                    <textarea id="notes" name="notes" placeholder="notes" class="form-control"></textarea>
+                    <textarea id="notes" name="notes" placeholder="Notes" 
+                        class="form-control" >{{ notes or '' }}</textarea>
                 </div>
                 <button id="submit" type="submit" name="submit" class="btn btn-success">Done</button>
             </form>

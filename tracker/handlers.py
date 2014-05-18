@@ -45,7 +45,7 @@ class Index(BaseHandler):
 
 class Home(BaseHandler):
 
-    def get(self):
+    def build_context(self):
         user = self.current_user if self.logged_in else None
         if user:
             seven_days_ago = utils.seven_days_before(datetime.date.today())
@@ -57,8 +57,34 @@ class Home(BaseHandler):
                     'seven_day_count': sum(x.word_count for x in words),
                     'entries': entries,
                     'user': user,
+                    'genres': ['Short fiction', 'Novel draft', 'Non-fiction',
+                            'Academic writing', 'Blog'],
+                    'invalids': [],
             }
-        self.render_response('home.html', **context)
+        return context
+
+    def get(self):
+        self.render_response('home.html', **self.build_context())
+
+    def post(self):
+        date = self.request.POST.get('date')
+        word_count = self.request.POST.get('word-count')
+        genre = self.request.POST.get('genre')
+        notes = self.request.POST.get('notes')
+        parent = self.current_user.key
+        try:
+            entry = models.Entry.create(date, word_count, genre, notes, parent)
+        except ValueError:
+            context = self.build_context()
+            context['date'] = date
+            context['word_count'] = word_count
+            context['selected'] = genre
+            context['notes'] = notes
+            entry_validation = utils.EntryValidation(self.request.POST)
+            context['invalids'] = entry_validation.validate()
+            self.render_response('home.html', **context)
+            return
+        self.redirect_to('confirm', key=entry.urlsafe())
 
 
 class Confirmation(BaseHandler):
@@ -75,14 +101,3 @@ class Confirmation(BaseHandler):
                 'seven_day_count': sum(x.word_count for x in words),
         }
         self.render_response('confirm.html', **context)
-
-class Entry(BaseHandler):
-
-    def post(self):
-        date = self.request.POST.get('date')
-        word_count = self.request.POST.get('word-count')
-        genre = self.request.POST.get('genre')
-        notes = self.request.POST.get('notes')
-        parent = self.current_user.key
-        entry = models.Entry.create(date, word_count, genre, notes, parent)
-        self.redirect_to('confirm', key=entry.urlsafe())
